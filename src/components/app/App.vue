@@ -11,7 +11,7 @@
 			<v-navigation-drawer app v-model="drawer">
 				<v-list nav dense>
 					<!-- Home/Dashboard -->
-					<v-list-item :to="{ name: 'Home' }" exact>
+					<v-list-item :to="{ name: 'HomePage' }" exact>
 						<v-list-item-icon>
 							<v-icon>mdi-home</v-icon>
 						</v-list-item-icon>
@@ -32,7 +32,7 @@
 			</v-navigation-drawer>
 		</nav>
 		<v-content>
-			Woodie was here
+			<router-view></router-view>
 		</v-content>
 		<v-footer app dark class="primary" height="25">
 			<span class="white--text caption">&copy; Jaxnode</span>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+
 export default {
 	name: 'jaxnodeKanBan',
 	data: () => ({
