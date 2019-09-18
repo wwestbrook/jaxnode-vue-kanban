@@ -1,0 +1,308 @@
+/*=== step 1 - install vue cli ======================================================*/
+npm i @vue/cli -g
+
+/*=== step 2 - install vuetify ======================================================*/
+vue add vuetify --save-dev
+
+/*=== step 3 - install vue cli ======================================================*/
+copy configs
+
+/*=== step 4 - Clean up the project ======================================================*/
+move folders
+
+/*=== step 5 - App new App content =======================================================*/
+<template>
+	<v-app :color="appColors.app">
+		<div>nav goes here</div>
+		<v-content>
+			Woodie was here
+		</v-content>
+		<div>
+			footer goes here
+		</div>
+	</v-app>
+</template>
+
+<script>
+
+export default {
+	name: 'jaxnodeKanBan',
+	data: () => ({
+		drawer: false,
+		appColors: {
+			app: '#F5F5F5'
+		}
+	})
+};
+</script>
+
+<style scoped lang="scss">
+.nav-link {
+	text-decoration: none;
+	color: inherit;
+}
+</style>
+
+
+/*=== step 6 - add nav element ======================================================*/
+<nav>
+			<v-app-bar app dark class="primary" height="50">
+				<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+				<v-toolbar-title>
+						KanBAN
+				</v-toolbar-title>
+				<v-spacer></v-spacer>
+			</v-app-bar>
+			<v-navigation-drawer app v-model="drawer">
+				<v-list nav dense>
+					<!-- Home/Dashboard -->
+					<v-list-item :to="{ name: 'Home' }" exact>
+						<v-list-item-icon>
+							<v-icon>mdi-home</v-icon>
+						</v-list-item-icon>
+						<v-list-item-content>
+							<v-list-item-title>Home</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+					<!-- KanBan Board -->
+					<v-list-item :to="{ name: 'KanbanBoard' }" exact>
+						<v-list-item-icon>
+							<v-icon>mdi-view-dashboard-variant</v-icon>
+						</v-list-item-icon>
+						<v-list-item-content>
+							<v-list-item-title>Kanban Board</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+				</v-list>
+			</v-navigation-drawer>
+		</nav>
+
+/*=== step 7 - add footer ===*/
+<v-footer app dark class="primary" height="25">
+	<span class="white--text caption">&copy; Jaxnode</span>
+</v-footer>
+
+/*=== step 8 - Fix vuetify theme colors ======================================================*/
+theme: {
+		themes: {
+			light: {
+				primary: '#003a63',
+				secondary: '#0A3854',
+				accent: '#015E84',
+				error: '#D32F2F',
+				info: '#50A2BF',
+				success: '#4CAF50',
+				warning: '#FFA000'
+			},
+			dark: {
+				primary: '#003a63',
+				secondary: '#0A3854',
+				accent: '#015E84',
+				error: '#D32F2F',
+				info: '#50A2BF',
+				success: '#4CAF50',
+				warning: '#FFA000'
+			},
+			/* DO NOT ALTER!! */
+			default: {
+				primary: '#1976D2',
+				secondary: '#424242',
+				accent: '#82B1FF',
+				error: '#FF5252',
+				info: '#2196F3',
+				success: '#4CAF50',
+				warning: '#FFC107'
+			}
+		}
+	}
+
+/*=== step 9 - Home and KanBan Components ======================================================*/
+add components	
+
+<template>
+	<v-container grid-list-md>
+		<h2>Kanban Board</h2>
+		<div>
+			<p>Create and modify kanban cards.</p>
+		</div>
+		<v-layout>
+			Add a Card
+		</v-layout>
+	</v-container>
+</template>
+
+<script>
+export default {
+	name: 'KanbanBoard'
+};
+</script>
+
+<style scoped></style>
+
+
+/*=== step 10 - Configure routes ======================================================*/
+- add routes folder
+- add router.js
+
+
+import Vue from 'vue';
+import Router from 'vue-router';
+
+Vue.use(Router);
+
+const router = new Router({
+	mode: 'history',
+	routes: [
+		{
+		}
+	]
+});
+
+export default router;
+
+
+-- add routes, name, component, path.  add router-view
+
+
+
+/*=== step 11 - add and configure Vuex ======================================================*/
+ - npm i vuex --save
+ - add \stores
+ - add \stores\.store.js
+ - register with main.js
+ - add \stores\modules
+ 
+ export default {
+	namespaced: true,
+	state: {
+		items: {
+			new: [],
+			inProgress: [],
+			done: []
+		},
+		nextId: 1
+	},
+	mutations: {
+		addCard(state, newCard) {
+			state.items.new.push(Object.assign(newCard, { id: state.nextId }));
+			state.nextId += 1;
+		},
+		updateItems(state, { items, itemType }) {
+			if (itemType === 'new') {
+				state.items.new = items;
+			}
+			if (itemType === 'inProgress') {
+				state.items.inProgress = items;
+			}
+			if (itemType === 'done') {
+				state.items.done = items;
+			}
+		}
+	}
+};
+
+ 
+ 
+
+/*=== step 12 - Add card Form ======================================================*/
+-- add to kanbanBoard.vue
+
+<v-form action="#" method="post" v-on:submit.prevent="submitForm">
+	<v-text-field label="Add task" required v-model="cardName"></v-text-field>
+</v-form>
+
+data: () => ({
+		cardName: ''
+	}),
+	methods: {
+		submitForm() {
+			if (this.cardName) {
+				this.$store.commit('kanban/addCard', {
+					text: this.cardName
+				});
+
+				this.cardName = '';
+			}
+		}
+	}
+	
+	
+/*=== step 13 - Add a Board Column ======================================================*/
+ - add column and card template
+ <v-flex md3>
+				<v-card>
+					<v-toolbar color="secondary" dark>
+						<v-toolbar-title>New Items</v-toolbar-title>
+						<v-spacer></v-spacer>
+					</v-toolbar>
+					<v-list>
+						<v-list-item v-for="item in newItems" :key="item.id">
+							<v-list-item-content>
+								<v-list-item-title v-text="item.text"></v-list-item-title>
+							</v-list-item-content>
+							<v-list-item-action>
+								<v-btn icon>
+									<v-icon color="grey lighten-1">info</v-icon>
+								</v-btn>
+							</v-list-item-action>
+						</v-list-item>
+					</v-list>
+				</v-card>
+			</v-flex>
+	
+
+import { mapState } from 'vuex';
+	
+- add store mappings
+- add to computed
+		...mapState('kanban', ['items']),
+		newItems: {
+			get() {
+				return this.items.new;
+			},
+			set(items) {
+				this.$store.commit('kanban/updateItems', {
+					items,
+					itemType: 'new'
+				});
+			}
+		}
+
+- add additional columns
+
+
+
+/*=== step 14 - install VueDraggable ======================================================*/
+- npm i vuedraggable --save
+- import Draggable from 'vuedraggable';
+
+- add tags
+<draggable v-model="newItems" :options="{ group: 'default' }">
+
+- add final arrays
+inProgressItems: {
+			get() {
+				return this.items.inProgress;
+			},
+			set(items) {
+				this.$store.commit('kanban/updateItems', {
+					items,
+					itemType: 'inProgress'
+				});
+			}
+		},
+		doneItems: {
+			get() {
+				return this.items.done;
+			},
+			set(items) {
+				this.$store.commit('kanban/updateItems', {
+					items,
+					itemType: 'done'
+				});
+			}
+		}
+
+/*=== step 8 - install vue cli ======================================================*/
+
+/*=== step 8 - install vue cli ======================================================*/
