@@ -4,75 +4,81 @@
 		<div>
 			<p>Create and modify kanban cards.</p>
 		</div>
-		<v-layout>
-			<v-form action="#" method="post" v-on:submit.prevent="submitForm">
-				<v-text-field label="Add Card" required v-model="cardName"></v-text-field>
-			</v-form>
-		</v-layout>
+		<v-container>
+			<v-layout row>
+				<v-flex md2 class="mr-8">
+					<v-text-field label="Card Title" required v-model="cardName"></v-text-field>
+				</v-flex>
+				<v-flex md4 class="mr-8">
+					<v-text-field label="Description" required v-model="cardDescription"></v-text-field>
+				</v-flex>
+				<v-flex md4>
+					<v-btn @click="addCard()" color="primary">Add</v-btn>
+				</v-flex>
+			</v-layout>
+		</v-container>
 		<v-layout>
 			<!-- NEW Column -->
-			<v-flex md3>
-				<v-card>
-					<v-toolbar color="secondary" dark>
+			<v-flex sm4>
+				<v-card class="mx-auto">
+					<v-app-bar dark color="secondary">
 						<v-toolbar-title>New Items</v-toolbar-title>
-						<v-spacer></v-spacer>
-					</v-toolbar>
-					<v-list>
+						<div class="flex-grow-1"></div>
+					</v-app-bar>
+					<v-container class="pa-2" fluid>
 						<draggable v-model="newItems" :options="{ group: 'default' }">
-							<v-list-item v-for="item in newItems" :key="item.id">
-								<v-list-item-content>
-									<v-list-item-title v-text="item.text"></v-list-item-title>
-								</v-list-item-content>
-								<v-list-item-action>
-									<v-btn icon>
-										<v-icon color="grey lighten-1">mdi-emoticon-happy</v-icon>
-									</v-btn>
-								</v-list-item-action>
-							</v-list-item>
+							<v-row v-for="item in newItems" :key="item.id">
+								<v-col>
+									<v-card class="my-n2">
+										<v-card-title>{{ item.text }}</v-card-title>
+										<v-card-text>{{ item.description }}</v-card-text>
+									</v-card>
+								</v-col>
+							</v-row>
 						</draggable>
-					</v-list>
+					</v-container>
 				</v-card>
 			</v-flex>
 			<!-- InProgress Column -->
-			<v-flex md3>
-				<v-card>
-					<v-toolbar color="warning" dark>
+			<v-flex sm4>
+				<v-card class="mx-auto">
+					<v-app-bar dark color="warning">
 						<v-toolbar-title>In Progress</v-toolbar-title>
-						<v-spacer></v-spacer>
-					</v-toolbar>
-					<draggable v-model="inProgressItems" :options="{ group: 'default' }">
-						<v-list-item v-for="item in inProgressItems" :key="item.id">
-							<v-list-item-content>
-								<v-list-item-title v-text="item.text"></v-list-item-title>
-							</v-list-item-content>
-							<v-list-item-action>
-								<v-btn icon>
-									<v-icon color="grey lighten-1">mdi-emoticon-happy</v-icon>
-								</v-btn>
-							</v-list-item-action>
-						</v-list-item>
-					</draggable>
+						<div class="flex-grow-1"></div>
+					</v-app-bar>
+					<v-container class="pa-2" fluid>
+						<draggable v-model="inProgressItems" :options="{ group: 'default' }">
+							<v-row v-for="item in inProgressItems" :key="item.id">
+								<v-col>
+									<v-card class="my-n2">
+										<v-card-title>{{ item.text }}</v-card-title>
+										<v-card-text>{{ item.description }}</v-card-text>
+									</v-card>
+								</v-col>
+							</v-row>
+						</draggable>
+					</v-container>
 				</v-card>
 			</v-flex>
 			<!-- Done Column -->
-			<v-flex md3>
-				<v-card>
-					<v-toolbar color="success" dark>
+			<v-flex sm4>
+				<v-card class="mx-auto">
+					<v-app-bar dark color="success">
 						<v-toolbar-title>Done</v-toolbar-title>
-						<v-spacer></v-spacer>
-					</v-toolbar>
-					<draggable v-model="doneItems" :options="{ group: 'default' }">
-						<v-list-item v-for="item in doneItems" :key="item.id">
-							<v-list-item-content>
-								<v-list-item-title v-text="item.text"></v-list-item-title>
-							</v-list-item-content>
-							<v-list-item-action>
-								<v-btn icon>
-									<v-icon color="grey lighten-1">mdi-emoticon-happy</v-icon>
-								</v-btn>
-							</v-list-item-action>
-						</v-list-item>
-					</draggable>
+						<div class="flex-grow-1"></div>
+					</v-app-bar>
+					<v-container class="pa-2" fluid>
+						<draggable v-model="doneItems" :options="{ group: 'default' }">
+							<v-row v-for="item in doneItems" :key="item.id">
+								<v-col>
+									<v-card class="my-n2">
+										<v-card-title>{{ item.text }}</v-card-title>
+										<v-card-text>{{ item.description }}</v-card-text>
+									</v-card>
+								</v-col>
+							</v-row>
+						</draggable>
+					</v-container>
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -86,7 +92,8 @@ import Draggable from 'vuedraggable';
 export default {
 	name: 'KanbanBoard',
 	data: () => ({
-		cardName: ''
+		cardName: '',
+		cardDescription: ''
 	}),
 	components: {
 		draggable: Draggable
@@ -128,13 +135,15 @@ export default {
 		}
 	},
 	methods: {
-		submitForm() {
+		addCard() {
 			if (this.cardName) {
 				this.$store.commit('kanban/addCard', {
-					text: this.cardName
+					text: this.cardName,
+					description: this.cardDescription
 				});
 
 				this.cardName = '';
+				this.cardDescription = '';
 			}
 		}
 	}
