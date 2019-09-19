@@ -49,7 +49,8 @@ export default {
 			<v-app-bar app dark class="primary" height="50">
 				<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 				<v-toolbar-title>
-						KanBAN
+						<span class="font-weight-light">Vue sKan</span>
+						<span>Ban</span>
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
 			</v-app-bar>
@@ -79,7 +80,7 @@ export default {
 
 /*=== step 7 - add footer ===*/
 <v-footer app dark class="primary" height="25">
-	<span class="white--text caption">&copy; Jaxnode</span>
+	<span class="white--text caption">&copy; 2019 Jaxnode</span>
 </v-footer>
 
 /*=== step 8 - Fix vuetify theme colors ======================================================*/
@@ -163,14 +164,40 @@ export default router;
 
 -- add routes, name, component, path.  add router-view
 
+routes: [
+		{
+			name: 'HomePage',
+			component: HomePage,
+			path: '/'
+		},
+		{
+			name: 'KanbanBoard',
+			component: KanbanBoard,
+			path: '/kanban'
+		}
+	]
 
 
 /*=== step 11 - add and configure Vuex ======================================================*/
  - npm i vuex --save
  - add \stores
- - add \stores\.store.js
+ - add \stores\store.js
+
+
+ import Vue from 'vue';
+ import Vuex from 'vuex';
+
+ Vue.use(Vuex);
+
+ export default new Vuex.Store({
+ 	state: {},
+
+ });
+
+
  - register with main.js
  - add \stores\modules
+
 
  export default {
 	namespaced: true,
@@ -315,6 +342,4 @@ inProgressItems: {
 			}
 		}
 
-/*=== step 8 - install vue cli ======================================================*/
 
-/*=== step 8 - install vue cli ======================================================*/

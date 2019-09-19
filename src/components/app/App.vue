@@ -4,7 +4,8 @@
 			<v-app-bar app dark class="primary" height="50">
 				<v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 				<v-toolbar-title>
-					KanBAN
+					<span class="font-weight-light">Vue Kan</span>
+					<span>Ban</span>
 				</v-toolbar-title>
 				<v-spacer></v-spacer>
 			</v-app-bar>
@@ -35,7 +36,7 @@
 			<router-view></router-view>
 		</v-content>
 		<v-footer app dark class="primary" height="25">
-			<span class="white--text caption">&copy; Jaxnode</span>
+			<span class="white--text caption">&copy;2019 Jaxnode</span>
 		</v-footer>
 	</v-app>
 </template>
